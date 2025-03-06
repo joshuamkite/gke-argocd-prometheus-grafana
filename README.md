@@ -96,6 +96,7 @@ bucket = {
   prefix = "gke/study-cluster"
 }
 
+deletion_protection = true # allow deletion of study cluster
 ```
 
 ### 1. Deployment
@@ -207,7 +208,7 @@ argocd appset delete monitoring-apps
 ```bash
 tofu destroy
 ```
-
+**N.B. May be necessary to delete cluster in console to allow `tofu destroy` to proceed**
 
 ## Requirements
 
@@ -263,6 +264,7 @@ tofu destroy
 | <a name="input_default_node_pool_min_count"></a> [default\_node\_pool\_min\_count](#input\_default\_node\_pool\_min\_count) | Minimum count for the default node pool | `number` | `1` | no |
 | <a name="input_default_node_pool_name"></a> [default\_node\_pool\_name](#input\_default\_node\_pool\_name) | The name of the default node pool | `string` | `"default-node-pool"` | no |
 | <a name="input_default_node_pool_tags"></a> [default\_node\_pool\_tags](#input\_default\_node\_pool\_tags) | Tags for the default node pool | `list(string)` | <pre>[<br/>  "default-node-pool"<br/>]</pre> | no |
+| <a name="input_deletion_protection"></a> [deletion\_protection](#input\_deletion\_protection) | Enable deletion protection for the GKE cluster | `bool` | `false` | no |
 | <a name="input_gke_cluster_name"></a> [gke\_cluster\_name](#input\_gke\_cluster\_name) | The name of the GKE cluster | `string` | `"gke-test-1"` | no |
 | <a name="input_horizontal_pod_autoscaling"></a> [horizontal\_pod\_autoscaling](#input\_horizontal\_pod\_autoscaling) | Enable horizontal pod autoscaling | `bool` | `true` | no |
 | <a name="input_http_load_balancing"></a> [http\_load\_balancing](#input\_http\_load\_balancing) | Enable HTTP load balancing | `bool` | `true` | no |

@@ -12,13 +12,6 @@ variable "default_labels" {
   default     = {}
 }
 
-# Removed GPU-related variables:
-# default_node_pool_accelerator_count
-# default_node_pool_accelerator_type
-# default_node_pool_gpu_driver_version
-# default_node_pool_gpu_sharing_strategy
-# default_node_pool_max_shared_clients_per_gpu
-
 variable "default_node_pool_auto_repair" {
   description = "Enable auto repair for the default node pool"
   type        = bool
@@ -42,10 +35,6 @@ variable "default_node_pool_disk_type" {
   type        = string
   default     = "pd-standard"
 }
-
-# Removed redundant boolean variables:
-# default_node_pool_enable_gcfs
-# default_node_pool_enable_gvnic
 
 variable "default_node_pool_image_type" {
   description = "Image type for the default node pool"
@@ -117,13 +106,6 @@ variable "default_node_pool_name" {
   default     = "default-node-pool"
 }
 
-# Removed redundant boolean variables:
-# default_node_pool_preemptible
-# default_node_pool_spot
-
-# Removed taints variable since we're using an empty list
-# default_node_pool_taints
-
 variable "default_node_pool_tags" {
   description = "Tags for the default node pool"
   type        = list(string)
@@ -132,11 +114,11 @@ variable "default_node_pool_tags" {
   ]
 }
 
-# Removed redundant boolean variables since we're using defaults:
-# dns_cache
-# filestore_csi_driver
-# http_load_balancing
-# network_policy
+variable "deletion_protection" {
+  description = "Enable deletion protection for the GKE cluster"
+  type        = bool
+  default     = false
+}
 
 variable "gke_cluster_name" {
   description = "The name of the GKE cluster"
@@ -146,6 +128,12 @@ variable "gke_cluster_name" {
 
 variable "horizontal_pod_autoscaling" {
   description = "Enable horizontal pod autoscaling"
+  type        = bool
+  default     = true
+}
+
+variable "http_load_balancing" {
+  description = "Enable HTTP load balancing"
   type        = bool
   default     = true
 }
@@ -206,11 +194,3 @@ variable "zones" {
   type        = list(string)
   default     = ["us-central1-a", "us-central1-b", "us-central1-f"]
 }
-variable "http_load_balancing" {
-  description = "Enable HTTP load balancing"
-  type        = bool
-  default     = true
-}
-
-
-

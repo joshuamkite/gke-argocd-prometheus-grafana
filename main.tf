@@ -148,4 +148,6 @@ module "gke" {
     all               = []
     default-node-pool = var.default_node_pool_tags
   }
+
+  deletion_protection = var.deletion_protection
 }
