@@ -23,14 +23,6 @@ resource "google_project_service" "iam_api" {
   disable_on_destroy         = false
 }
 
-
-
-
-
-
-
-
-
 # Create VPC network
 resource "google_compute_network" "vpc_network" {
   depends_on = [
