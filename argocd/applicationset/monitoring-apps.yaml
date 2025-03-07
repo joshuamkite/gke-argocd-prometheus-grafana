@@ -77,6 +77,13 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{namespace}}"
+      ignoreDifferences:
+        - group: ""
+          kind: Service
+          name: prometheus-kube-state-metrics
+          namespace: monitoring
+          jsonPointers:
+            - /metadata/annotations
       syncPolicy:
         automated:
           prune: true

@@ -156,7 +156,7 @@ argocd login localhost:8080 --username admin --password <your-password> --insecu
 Apply the ApplicationSet manifest:
 
 ```bash
-kubectl apply -f monitoring-apps.yaml
+kubectl apply -f argocd/applicationset/monitoring-apps.yaml
 ```
 
 This will deploy:
