@@ -1,6 +1,6 @@
 # GKE ArgoCD Prometheus Grafana
 
-This repository contains Terraform configurations and Kubernetes manifests to set up a basic small-scale Google Kubernetes Engine (GKE) cluster with ArgoCD for GitOps-based deployments. It includes monitoring components including Prometheus and Grafana.
+This repository contains Terraform configurations and Kubernetes manifests to set up a basic small-scale Google Kubernetes Engine (GKE) cluster with ArgoCD for GitOps-based deployments. It includes monitoring components including Prometheus and Grafana. Optionally a public hello-world service deployment is included to deomnstrate basic load balancing.
 
 - [GKE ArgoCD Prometheus Grafana](#gke-argocd-prometheus-grafana)
   - [Overview](#overview)
@@ -14,6 +14,7 @@ This repository contains Terraform configurations and Kubernetes manifests to se
   - [Accessing Monitoring Tools](#accessing-monitoring-tools)
     - [Prometheus](#prometheus)
     - [Grafana](#grafana)
+  - [Hello World Nginx](#hello-world-nginx)
   - [Cleanup](#cleanup)
     - [Delete ApplicationSet (optional)](#delete-applicationset-optional)
     - [Delete GKE Cluster](#delete-gke-cluster)
@@ -195,7 +196,38 @@ kubectl port-forward svc/grafana -n monitoring 3000:80
 
 Access Grafana at: http://localhost:3000 (Username: `admin`)
 
+## Hello World Nginx
+
+This deploys a simple Nginx server with a custom "Hello World" HTML page, exposed via a GCP LoadBalancer.
+
+```bash
+# Apply the deployment, service, and configmap
+kubectl apply -f hello-world/nginx-deployment.yaml
+
+# Check deployment status
+kubectl get deployment nginx-hello-world
+
+# Wait for the load balancer's external IP to be assigned
+kubectl get service nginx-hello-world-service
+
+# Access the application via the external IP
+# (Replace <EXTERNAL-IP> with the actual IP from the service)
+curl http://<EXTERNAL-IP>
+```
+
+The deployment includes:
+- 3 replicas of Nginx web server
+- A LoadBalancer service to expose the app externally
+- A ConfigMap with custom HTML content
+- Resource limits and health checks
+
+To verify the deployment is running properly, you should see the custom HTML page when accessing the LoadBalancer IP.
+
 ## Cleanup
+
+```bash
+kubectl delete -f hello-world/nginx-deployment.yaml
+```
 
 ### Delete ApplicationSet (optional)
 
