@@ -31,6 +31,10 @@ spec:
               port: 80
             initialDelaySeconds: 15
             periodSeconds: 20
+          volumeMounts:
+            - name: nginx-html
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
           resources:
             requests:
               cpu: 100m
@@ -38,6 +42,10 @@ spec:
             limits:
               cpu: 200m
               memory: 256Mi
+      volumes:
+        - name: nginx-html
+          configMap:
+            name: nginx-hello-world-config
 ---
 apiVersion: v1
 kind: Service
