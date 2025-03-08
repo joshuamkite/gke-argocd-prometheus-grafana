@@ -15,7 +15,11 @@ This repository contains Terraform configurations and Kubernetes manifests to se
     - [Prometheus](#prometheus)
     - [Grafana](#grafana)
   - [Hello World Nginx](#hello-world-nginx)
+    - [Direct Installation (fallback, without ArgoCD)](#direct-installation-fallback-without-argocd)
+    - [ArgoCD Installation](#argocd-installation)
+    - [Check nginx-hello-world service](#check-nginx-hello-world-service)
   - [Cleanup](#cleanup)
+    - [Delete nginx-hello-world service](#delete-nginx-hello-world-service)
     - [Delete ApplicationSet (optional)](#delete-applicationset-optional)
     - [Delete GKE Cluster](#delete-gke-cluster)
   - [Requirements](#requirements)
@@ -198,11 +202,24 @@ Access Grafana at: http://localhost:3000 (Username: `admin`)
 
 ## Hello World Nginx
 
-This deploys a simple Nginx server with a custom "Hello World" HTML page, exposed via a GCP LoadBalancer.
+This deploys a simple Nginx server with a custom "Hello World" HTML page, exposed via an Azure LoadBalancer. Can be installed with or without ArgoCD
+
+### Direct Installation (fallback, without ArgoCD)
 
 ```bash
 # Apply the deployment, service, and configmap
 kubectl apply -f hello-world/nginx-deployment.yaml
+```
+
+### ArgoCD Installation
+
+```bash
+kubectl apply -f argocd/hello-world-nginx/hello-world.yaml 
+```
+
+### Check nginx-hello-world service
+
+```bash
 
 # Check deployment status
 kubectl get deployment nginx-hello-world
@@ -221,13 +238,34 @@ The deployment includes:
 - A ConfigMap with custom HTML content
 - Resource limits and health checks
 
-To verify the deployment is running properly, you should see the custom HTML page when accessing the LoadBalancer IP.
-
 ## Cleanup
 
+### Delete nginx-hello-world service
+
+To properly delete ArgoCD-managed resources locally without touching Git repository or adding finalizers:
+
+1. Delete the ArgoCD Application:
+```bash
+kubectl delete application nginx-hello-world -n argocd
+```
+
+1. Delete all the resources created by the deployment (long version):
+```bash
+kubectl delete deployment nginx-hello-world
+kubectl delete service nginx-hello-world-service
+kubectl delete configmap nginx-hello-world-config
+```
+
+Alternatively (short version), use the original YAML file to delete all resources at once:
 ```bash
 kubectl delete -f hello-world/nginx-deployment.yaml
 ```
+
+This sequence ensures that:
+1. ArgoCD stops managing (and auto-healing) the resources
+2. All the actual resources are properly removed from your cluster
+
+In a true GitOps workflow, we would normally remove resources by deleting them from the Git repository and letting ArgoCD sync the changes, but these commands provide a quick local cleanup when needed.
 
 ### Delete ApplicationSet (optional)
 
