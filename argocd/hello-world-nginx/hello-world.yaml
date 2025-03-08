@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: "https://github.com:joshuamkite/gke-argocd-prometheus-grafana.git"
+    repoURL: "https://github.com/joshuamkite/gke-argocd-prometheus-grafana.git"
     path: hello-world
-    targetRevision: feature/lb # HEAD
+    targetRevision: HEAD
   destination:
     server: "https://kubernetes.default.svc"
     namespace: default
