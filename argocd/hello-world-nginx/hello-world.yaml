@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: "https://github.com:joshuamkite/gke-argocd-prometheus-grafana.git"
     path: hello-world
-    targetRevision: HEAD
+    targetRevision: feature/lb # HEAD
   destination:
     server: "https://kubernetes.default.svc"
     namespace: default
